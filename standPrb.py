@@ -41,7 +41,7 @@ class WData:
         return np.nan_to_num(self.data[month_idx][:,year_idx,:][:,day],nan=0)
 
 
-Path='E:/code/python/gis/frykit/frykit/data/PRE_1961_2022_summer.mat'
+Path='PRE_1961_2022_summer.mat'
 
 wdata = WData(Path)
 Stanum = wdata.stanum
