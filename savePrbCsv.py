@@ -39,15 +39,15 @@ class WData:
         return np.nan_to_num(self.data[month_idx][:,year_idx,:][:,day],nan=0)
 
 
-Path='E:/code/python/gis/frykit/frykit/data/PRE_1961_2022_summer.mat'
+Path='PRE_1961_2022_summer.mat'
 wdata = WData(Path)
 Stanum = wdata.stanum
 Lat = wdata.lat
 Lon = wdata.lon
 Rain = wdata.get(1961,6,1) 
 
-Path='E:/code/python/gis/frykit/frykit/data/PRE_1961_2022_summer.mat'
-data = scio.loadmat("E:/code/python/gis/frykit/frykit/data/PRE_1961_2022_summer.mat")
+Path='PRE_1961_2022_summer.mat'
+data = scio.loadmat("PRE_1961_2022_summer.mat")
 
 wdata = WData(Path)
 Stanum = wdata.stanum
@@ -74,7 +74,7 @@ for mouth_idx in mouth:
             pdf=0.0 if(pdf< 1e-99) or (pdf >100) else pdf
             pre.append(round(pdf*100,2))
             #print(ex,pdf)
-        cavout='./prbCsv/rainprb_{year}_{mouth}.csv'\
+        cavout='./PrbCsv/prbrain_{year}_{mouth}.csv'\
         .format(year=1961+year_idx,mouth=mouth_idx)
         print(cavout)
         rainprb=pre

@@ -1,5 +1,5 @@
-prbCsv/
-rainCsv/
+PrbCsv/*
+AnoCsv/*
 standAnoCsv/
 standPrbCsv/
 contrastCsv/
