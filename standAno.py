@@ -51,7 +51,7 @@ Lon = wdata.lon
 for mouth_idx in ['pre_06','pre_07','pre_08']:
     AnoData = np.zeros((62,699),dtype=np.float16)
     for year_idx in range(62):
-        Anoread='./rainCsv/rain_{year}_{mouth}.csv'\
+        Anoread='./AnoCsv/anorain_{year}_{mouth}.csv'\
         .format(year=1961+year_idx,mouth=mouth_idx)
         AnoFile = pd.read_csv(Anoread,header=0)
         AnoFile['Rain']=AnoFile['Rain'].abs()
@@ -61,7 +61,7 @@ for mouth_idx in ['pre_06','pre_07','pre_08']:
     scaled_data = scaler.transform(AnoData)
     scaled_data = np.round(scaled_data, 2)
     for year_idx in range(62):
-        cavout='./standAnoCsv/Ano_{year}_{mouth}.csv'\
+        cavout='./standAnoCsv/Anostand_{year}_{mouth}.csv'\
         .format(year=1961+year_idx,mouth=mouth_idx)
         with open(cavout, 'w', newline="") as f:
             writer = csv.writer(f)

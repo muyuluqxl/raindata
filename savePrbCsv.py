@@ -38,14 +38,6 @@ class WData:
         month_idx = f'pre_{str(month).zfill(2)}'
         return np.nan_to_num(self.data[month_idx][:,year_idx,:][:,day],nan=0)
 
-
-Path='PRE_1961_2022_summer.mat'
-wdata = WData(Path)
-Stanum = wdata.stanum
-Lat = wdata.lat
-Lon = wdata.lon
-Rain = wdata.get(1961,6,1) 
-
 Path='PRE_1961_2022_summer.mat'
 data = scio.loadmat("PRE_1961_2022_summer.mat")
 

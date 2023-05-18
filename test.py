@@ -39,15 +39,8 @@ class WData:
         return np.nan_to_num(self.data[month_idx][:,year_idx,:][:,day],nan=0)
 
 
-Path='E:/code/python/gis/frykit/frykit/data/PRE_1961_2022_summer.mat'
-wdata = WData(Path)
-Stanum = wdata.stanum
-Lat = wdata.lat
-Lon = wdata.lon
-Rain = wdata.get(1961,6,1) 
-
-Path='E:/code/python/gis/frykit/frykit/data/PRE_1961_2022_summer.mat'
-data = scio.loadmat("E:/code/python/gis/frykit/frykit/data/PRE_1961_2022_summer.mat")
+Path='PRE_1961_2022_summer.mat'
+data = scio.loadmat("PRE_1961_2022_summer.mat")
 
 wdata = WData(Path)
 Stanum = wdata.stanum
@@ -56,40 +49,28 @@ Lon = wdata.lon
 
 mouth=['pre_06']
 for mouth_idx in mouth:
-    allStan_allYear = data[mouth_idx]
-    allStan_allYear = np.nan_to_num(allStan_allYear)
-    for year_idx in range(1):
-        allStan_oneYear = allStan_allYear[:,year_idx,:]
-        pre=[]
-        for stan_idx in range(1):
-            #所有数据fit
-            oneStan_allYear = allStan_allYear[stan_idx]
-            fitdata = np.nan_to_num(oneStan_allYear).reshape(-1,1)
-            print(fitdata.shape)
-            chi2 = stats.chi2
-            df,loc,scale = chi2.fit(fitdata,floc=0)
-            #期望计算概率值
-            oneStan_oneYear = allStan_oneYear[stan_idx]
-            ex = np.mean(oneStan_oneYear)
-            print(ex)
-            pdf=chi2.pdf(ex,df,loc,scale)
-            pdf=0.0 if(pdf< 1e-99) or (pdf >100) else pdf
-            pre.append(round(pdf*100,2))
-
-"""     pre = data[mouth_idx]
+    pre = data[mouth_idx]
+    #print(mouth_idx)
+    #print(pre.shape)
+    x,y,z = pre.shape
     pre = np.nan_to_num(pre)
     pre_mean_mouth = np.nanmean(pre, axis = 2)
-    pre_mean_all = np.nanmean(pre_mean_mouth, axis = 1)
+    pre_var_mouth = np.around(np.nanvar(pre, axis = 2),2)
+    pre_mean_all = np.nanmean(pre_mean_mouth, axis = 1).reshape(699,1)
+    pre_mean_mouth = np.nan_to_num(pre_mean_mouth)
     pre_mean_all = np.nan_to_num(pre_mean_all)
-    #
+    all_rainpct=np.around(((pre_mean_mouth-pre_mean_all)/pre_mean_all)* 100,decimals=2)
 
-    allStan_allYear = data[mouth_idx]
     for year_idx in range(1):
-        allStan_oneYear = allStan_allYear[:,year_idx,:]
-        pre=[]
-        for stan_idx in range(1):            
-            oneStan_oneYear = allStan_oneYear[stan_idx]
-            oneStan_oneYear = np.nan_to_num(oneStan_oneYear)
-            print(oneStan_oneYear.shape)
-            #chi2 = stats.chi2
-            #df,loc,scale = chi2.fit(Y,floc=0) """
+        cavout='./contrastCsv/test.txt'\
+        .format(year=1961+year_idx,mouth=mouth_idx)
+        print(cavout)
+        rainpct=all_rainpct[:,year_idx]
+        pre_mean_mouth=np.around(pre_mean_mouth,2)
+        mean=pre_mean_mouth[:,year_idx]
+        var=pre_var_mouth[:,year_idx]
+        with open(cavout, 'w', newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(['Stanum', 'Lat', 'Lon', 'Rain','Mean','Var'])
+            for i in range(699):
+                writer.writerow([Stanum[i], Lat[i], Lon[i] ,rainpct[i],mean[i],var[i]]) 

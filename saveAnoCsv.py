@@ -53,6 +53,7 @@ for mouth_idx in mouth:
     x,y,z = pre.shape
     pre = np.nan_to_num(pre)
     pre_mean_mouth = np.nanmean(pre, axis = 2)
+    pre_var_mouth = np.around(np.nanvar(pre, axis = 2),2)
     pre_mean_all = np.nanmean(pre_mean_mouth, axis = 1).reshape(699,1)
     pre_mean_mouth = np.nan_to_num(pre_mean_mouth)
     pre_mean_all = np.nan_to_num(pre_mean_all)
@@ -64,11 +65,14 @@ for mouth_idx in mouth:
         .format(year=1961+year_idx,mouth=mouth_idx)
         print(cavout)
         rainpct=all_rainpct[:,year_idx]
+        pre_mean_mouth=np.around(pre_mean_mouth,2)
+        mean=pre_mean_mouth[:,year_idx]
+        var=pre_var_mouth[:,year_idx]
         with open(cavout, 'w', newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(['Stanum', 'Lat', 'Lon', 'Rain'])
+            writer.writerow(['Stanum', 'Lat', 'Lon', 'Rain','Mean','Var'])
             for i in range(699):
-                writer.writerow([Stanum[i], Lat[i], Lon[i] ,rainpct[i]]) 
+                writer.writerow([Stanum[i], Lat[i], Lon[i], rainpct[i], mean[i], var[i]]) 
 
 
 

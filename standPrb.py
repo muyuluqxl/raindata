@@ -49,19 +49,19 @@ Lat = wdata.lat
 Lon = wdata.lon
 
 for mouth_idx in ['pre_06','pre_07','pre_08']:
-    AnoData = np.zeros((62,699),dtype=np.float16)
+    PrbData = np.zeros((62,699),dtype=np.float16)
     for year_idx in range(62):
-        Anoread='./prbCsv/rainprb_{year}_{mouth}.csv'\
+        Prbread='./PrbCsv/prbrain_{year}_{mouth}.csv'\
         .format(year=1961+year_idx,mouth=mouth_idx)
-        AnoFile = pd.read_csv(Anoread,header=0)
-        AnoFile['Rain']=AnoFile['Rain'].abs()
+        PrbFile = pd.read_csv(Prbread,header=0)
+        PrbFile['Rain']=PrbFile['Rain'].abs()
         for stan_idx in range(699): 
-            AnoData[year_idx][stan_idx]=AnoFile['Rain'][stan_idx]
-    scaler = StandardScaler().fit(AnoData)
-    scaled_data = scaler.transform(AnoData)
+            PrbData[year_idx][stan_idx]=PrbFile['Rain'][stan_idx]
+    scaler = StandardScaler().fit(PrbData)
+    scaled_data = scaler.transform(PrbData)
     scaled_data = np.round(scaled_data, 2)
     for year_idx in range(62):
-        cavout='./standPrbCsv/Prb_{year}_{mouth}.csv'\
+        cavout='./standPrbCsv/Prbstand_{year}_{mouth}.csv'\
         .format(year=1961+year_idx,mouth=mouth_idx)
         with open(cavout, 'w', newline="") as f:
             writer = csv.writer(f)
